@@ -17,7 +17,16 @@ const {
     getArtBy3Words
 } = require('./controllers/portfolio.js');
 
-app.use(cors());
+// Source - https://stackoverflow.com/a/72965292
+// Posted by Dream180
+// Retrieved 2026-08-26, License - CC BY-SA 4.0
+
+var corsOptions = {
+  origin: "http://localhost:3000"
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get('/api', getApi);
