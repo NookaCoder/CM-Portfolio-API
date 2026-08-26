@@ -1,5 +1,5 @@
-const cors = require('cors');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const {
     getApi,
@@ -17,14 +17,22 @@ const {
     getArtBy3Words
 } = require('./controllers/portfolio.js');
 
-const corsOptions = {
-  origin: 'http://localhost:3000', // Allow only this origin
-  methods: ['GET'], // Allow these methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
-  credentials: true, // Enable if client sends cookies/credentials
-};
- 
-app.use(cors(corsOptions));
+const allowedOrigins = ['http://localhost:3000', 'https://carliemartece.com'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 204
+}));
 
 app.use(express.json());
 
